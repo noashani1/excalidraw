@@ -1,0 +1,22 @@
+services:
+  web:
+    image: node:24
+    working_dir: /opt/node_app
+    # install workspace deps at root, then run the Vite dev server from
+    # excalidraw-app with host binding so the preview proxy can reach it
+    command: sh -c "yarn --frozen-lockfile --network-timeout 600000 && cd excalidraw-app && yarn vite --host --port 3000 --no-open"
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      # .env.development sets VITE_APP_PORT=3001; force the dev server onto 3000
+      - VITE_APP_PORT=3000
+      # platform-provided; harmless on Vite 5, used by Vite >= 6.1 for host allowlist
+      - __VITE_ADDITIONAL_SERVER_ALLOWED_HOSTS
+    volumes:
+      - ./:/opt/node_app
+      # keep container-installed deps from being shadowed by the bind mount
+      - /opt/node_app/node_modules
+      - /opt/node_app/excalidraw-app/node_modules
+    stdin_open: true
+    tty: true

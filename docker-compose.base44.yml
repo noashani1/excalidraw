@@ -11,6 +11,9 @@ services:
       - NODE_ENV=development
       # .env.development sets VITE_APP_PORT=3001; force the dev server onto 3000
       - VITE_APP_PORT=3000
+      # silence vite-plugin-checker ESLint overlay noise (MetaProperty warnings,
+      # misleading "0 errors" ERROR badge); the project supports this flag
+      - VITE_APP_ENABLE_ESLINT=false
       # platform-provided; harmless on Vite 5, used by Vite >= 6.1 for host allowlist
       - __VITE_ADDITIONAL_SERVER_ALLOWED_HOSTS
     volumes:

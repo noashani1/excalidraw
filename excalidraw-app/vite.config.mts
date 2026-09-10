@@ -142,6 +142,9 @@ export default defineConfig(({ mode }) => {
       woff2BrowserPlugin(),
       react(),
       checker({
+        // Keep browser overlay diagnostics, but avoid vite-plugin-checker's
+        // misleading red terminal banner when it reports zero errors.
+        terminal: false,
         typescript: true,
         eslint:
           envVars.VITE_APP_ENABLE_ESLINT === "false"
